@@ -212,6 +212,11 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
 .founder-sub{text-align:center;color:var(--muted);margin:2px 0 18px}
 @media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.founder-box{flex-direction:column;text-align:center}.gallery-btn{width:100%;justify-content:center}}
 .founder-section{padding:0 0 70px}.founder-section .founder-box{margin-top:0;background:var(--green);border-color:#d5ad6255;box-shadow:0 10px 28px #102d2522}
+#galleryModal.modal,#founderModal.modal{align-items:flex-start;justify-content:center;padding:0}
+#galleryModal .modal-box,#founderModal .modal-box{height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;border-radius:0}
+#galleryModal .modal-bar,#founderModal .modal-bar{padding-top:max(8px,env(safe-area-inset-top))}
+@media(min-width:700px){#galleryModal.modal,#founderModal.modal{align-items:center;padding:12px}#galleryModal .modal-box,#founderModal .modal-box{height:92vh;height:92dvh;max-height:92dvh;border-radius:16px}}
+.lightbox{height:100vh;height:100dvh}
 </style>
 </head>
 <body>
@@ -942,8 +947,28 @@ function buildGallery(){
   grid.appendChild(b);
  });
 }
-function openLightbox(i){lightboxIndex=i;document.getElementById('lightboxImg').src=visibleGallery()[i];document.getElementById('lightbox').classList.add('open')}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
+var lightboxPushed=false;
+function openLightbox(i){
+ var lb=document.getElementById('lightbox');
+ lightboxIndex=i;document.getElementById('lightboxImg').src=visibleGallery()[i];
+ if(!lb.classList.contains('open')){
+  lb.classList.add('open');
+  try{history.pushState({siteLightbox:1},'',location.href);lightboxPushed=true;}catch(e){lightboxPushed=false;}
+ }
+}
+function closeLightbox(fromPop){
+ var lb=document.getElementById('lightbox');
+ if(!lb||!lb.classList.contains('open')) return;
+ lb.classList.remove('open');
+ if(lightboxPushed){
+  lightboxPushed=false;
+  if(fromPop!==true){try{history.back();}catch(e){}}
+ }
+}
+window.addEventListener('popstate',function(){
+ var lb=document.getElementById('lightbox');
+ if(lb&&lb.classList.contains('open')){lightboxPushed=false;lb.classList.remove('open');}
+});
 function moveLightbox(d){var l=visibleGallery();openLightbox((lightboxIndex+d+l.length)%l.length)}
 document.addEventListener('keydown',function(e){
  var lb=document.getElementById('lightbox');
