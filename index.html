@@ -181,6 +181,37 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
 #regModal .modal-close{display:grid;flex:0 0 48px;width:48px;height:48px;place-items:center;font-size:32px}
 #regModal .modal-body{min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .modal-bar{min-height:60px;padding:8px 12px}.modal-close{width:44px;height:44px;flex-basis:44px}body{font-size:16px}.hero{padding:75px 0 90px}.hero p{font-size:17px}.stats{padding:17px 8px}.stat strong{font-size:20px}.stat span{font-size:13px}.cards,.people,.eligibility,.foot{grid-template-columns:1fr}.person{align-items:center;padding:18px;gap:15px}.avatar{width:108px;height:108px}.person p{font-size:14px}.form{grid-template-columns:1fr;padding:20px}.field.full,.form button,.form-msg{grid-column:1}.photo{min-height:270px}section{padding:62px 0}.modal{padding:0}.modal-box{height:100vh;border-radius:0;max-width:none}}
+
+/* ===== ফটো গ্যালারী ও প্রতিষ্ঠাতা ===== */
+.photo-col{min-width:0}
+.gallery-open-wrap{margin-top:34px;display:flex;justify-content:center}
+.gallery-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 30px;border-radius:9px;border:1px solid var(--green);background:var(--green);color:#fff;font:inherit;font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 6px 18px #102d2522}
+.gallery-btn:hover{background:var(--green2);transform:translateY(-2px);transition:.2s}
+#galleryModal .modal-box,#founderModal .modal-box{max-width:980px}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gallery-grid button{padding:0;border:0;border-radius:10px;overflow:hidden;background:#e7e9e3;cursor:pointer;aspect-ratio:1/1;display:block}
+.gallery-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.gallery-grid button:hover img{transform:scale(1.06)}
+.gallery-empty{text-align:center;color:var(--muted);padding:30px 10px}
+.lightbox{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:14px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+.lightbox-close{position:absolute;top:12px;right:12px;width:46px;height:46px;border:1px solid #ffffff88;border-radius:8px;background:#0008;color:#fff;font-size:32px;line-height:1;cursor:pointer}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;background:#0006;color:#fff;font-size:38px;cursor:pointer;border-radius:8px}
+.lightbox-nav.prev{left:8px}.lightbox-nav.next{right:8px}
+.founder-box{display:flex;align-items:center;gap:22px;margin-top:34px;padding:22px;border:1px solid #ffffff2a;border-radius:14px;background:#ffffff0a}
+.founder-box img{width:130px;height:130px;flex:none;border-radius:50%;object-fit:cover;object-position:top;border:4px solid #d5ad62;background:#fff}
+.founder-box h3{color:var(--gold);margin:0 0 4px;font-size:20px}
+.founder-box .fname{font-size:19px;font-weight:700;color:#fff;margin:0}
+.founder-box .fsub{font-size:15px;color:#d5e2db;margin:2px 0 12px}
+.founder-box .btn{padding:10px 20px}
+.founder-photo-lg{display:block;width:170px;height:170px;margin:0 auto 16px;border-radius:50%;object-fit:cover;object-position:top;border:4px solid #d5ad62}
+.founder-body h3{color:var(--green);margin:22px 0 6px}
+.founder-body p,.founder-body li{color:var(--muted)}
+.founder-title{text-align:center;color:var(--green);margin:0}
+.founder-sub{text-align:center;color:var(--muted);margin:2px 0 18px}
+@media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.founder-box{flex-direction:column;text-align:center}.gallery-btn{width:100%;justify-content:center}}
+.founder-section{padding:0 0 70px}.founder-section .founder-box{margin-top:0;background:var(--green);border-color:#d5ad6255;box-shadow:0 10px 28px #102d2522}
 </style>
 </head>
 <body>
@@ -214,6 +245,7 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
 </div>
 <section id="about">
  <div class="wrap about-grid">
+ <div class="photo-col">
  <div class="photo photo-carousel" role="region" aria-label="রোভার স্কাউট দলের ছবির স্লাইডার">
     <div class="photo-carousel-track" id="photoCarouselTrack">
     <img src="https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/83e30b121b1ee49c5458de18f6f9c12db9e82124/Cover1.jpeg" alt="রোভার স্কাউট দলের ছবি ১, Jaldhaka Govt College Rover Scout Unit photo 1">
@@ -227,6 +259,8 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
     <button class="photo-carousel-arrow next" type="button" aria-label="পরের ছবি" onclick="movePhotoSlide(1)"><svg viewBox="0 0 20 40" width="16" height="34" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3l12 17L4 37"/></svg></button>
     <div class="photo-carousel-dots" id="photoCarouselDots" aria-label="ছবি নির্বাচন"></div>
    </div>
+   <div class="gallery-open-wrap"><button class="gallery-btn" type="button" onclick="openGallery()">🖼️ ফটো গ্যালারী</button></div>
+  </div>
   <div class="about-copy"><div class="eyebrow">আমাদের পরিচয়</div><h2>একসাথে শিখি, একসাথে এগিয়ে যাই</h2>
    <p><b>দল: জলঢাকা সরকারি কলেজ রোভার স্কাউট গ্রুপ</b></p>
    <p>রোভারিং হলো তরুণদের আত্মউন্নয়ন, নেতৃত্ব, দলগত কাজ ও সমাজসেবার একটি শিক্ষামূলক আন্দোলন। আমাদের ইউনিটে সদস্যরা হাতে-কলমে শেখে, দায়িত্ব নেয় এবং সমাজের কল্যাণে কাজ করার অনুপ্রেরণা পায়।</p>
@@ -248,7 +282,7 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
 <section class="soft" id="activities">
  <div class="wrap"><div class="section-head"><div class="eyebrow">আমাদের পথচলা</div><h2>রোভারদের কার্যক্রম</h2></div>
   <div class="cards">
-   <article class="card"><img src="https://i.postimg.cc/d0Jpk2tZ/1794982554870.jpg?auto=format&fit=crop&w=900&q=80" alt="স্বেচ্ছাসেবামূলক দলীয় কাজ"><div class="card-body"><span class="tag">সমাজসেবা</span><h3>স্বেচ্ছাসেবামূলক কার্যক্রম</h3><p>সামাজিক সচেতনতা, পরিচ্ছন্নতা অভিযান ও জনকল্যাণমূলক উদ্যোগে অংশগ্রহণ। এখানে নিজস্ব কার্যক্রমের তারিখ ও বিবরণ লিখুন।</p></div></article>
+   <article class="card"><img src="https://i.postimg.cc/d0Jpk2tZ/1794982554870.jpg?auto=format&fit=crop&w=900&q=80" alt="স্বেচ্ছাসেবামূলক দলীয় কাজ"><div class="card-body"><span class="tag">সমাজসেবা</span><h3>স্বেচ্ছাসেবামূলক কার্যক্রম</h3><p>সামাজিক সচেতনতা, পরিচ্ছন্নতা অভিযান ও জনকল্যাণমূলক উদ্যোগে অংশগ্রহণ।</p></div></article>
    <article class="card"><img src="https://i.postimg.cc/LsPvNhCC/1794981077783.jpg?auto=format&fit=crop&w=900&q=80" alt="প্রকৃতি ও পরিবেশ"><div class="card-body"><span class="tag">পরিবেশ</span><h3>পরিবেশ সংরক্ষণ</h3><p>বৃক্ষরোপণ, পরিবেশ পরিচ্ছন্ন রাখা এবং পরিবেশ বিষয়ে সচেতনতা তৈরিতে অংশগ্রহণ।</p></div></article>
    <article class="card"><img src="https://i.postimg.cc/C59zPM6J/Screenshot-2026-11-18-11-54-07-319-com-mi-android-global-Fileexplorer.png?auto=format&fit=crop&w=900&q=80" alt="দলগত প্রশিক্ষণ"><div class="card-body"><span class="tag">দলগত উদ্যোগ</span><h3>শৃঙ্খলা ও নেতৃত্বচর্চা</h3><p>দলীয় অনুশীলন, দায়িত্ব বণ্টন, যোগাযোগ ও নেতৃত্বের দক্ষতা অর্জনের আয়োজন।</p></div></article>
    <!-- নতুন পোস্ট: বিভিন্ন দিবস পালন -->
@@ -264,6 +298,20 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
    <article class="card"><img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=900&q=80" alt="ক্যাম্পিং"><div class="card-body"><h3>ক্যাম্পিং</h3><p>দলগত জীবন, দায়িত্ব ভাগাভাগি, প্রকৃতির সঙ্গে পরিচয় ও ক্যাম্পের নিয়মকানুন শেখা।</p></div></article>
    <article class="card"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="প্রশিক্ষণ"><div class="card-body"><h3>দক্ষতা প্রশিক্ষণ</h3><p>প্রাথমিক চিকিৎসা, যোগাযোগ, দল পরিচালনা, নিরাপত্তা সচেতনতা ও ব্যবহারিক দক্ষতার প্রশিক্ষণ।</p></div></article>
    <article class="card"><img src="https://i.postimg.cc/j5Hhz9gC/Screenshot-2026-11-18-12-18-59-614-com-google-android-apps-photos.png?auto=format&fit=crop&w=900&q=80" alt="দলীয় সমাবেশ"><div class="card-body"><h3>সমাবেশ ও ক্যাম্পুরি</h3><p>ইউনিট, জেলা ও জাতীয় পর্যায়ের অনুমোদিত সমাবেশে অংশগ্রহণ ও অভিজ্ঞতা বিনিময়।</p></div></article>
+  </div>
+ </div>
+</section>
+
+<section class="founder-section" id="founder">
+ <div class="wrap">
+  <div class="founder-box">
+   <img src="https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/c8d2f2f04eaf386666fe8f04e8b031a87f6a0591/bp.jpg" alt="স্কাউট আন্দোলনের প্রতিষ্ঠাতা রবার্ট ব্যাডেন-পাওয়েল" loading="lazy">
+   <div>
+    <h3>স্কাউটের প্রতিষ্ঠাতা</h3>
+    <p class="fname">রবার্ট স্টিফেনসন স্মিথ লর্ড ব্যাডেন পাওয়েল অফ গিলওয়েল (বি-পি)</p>
+    <p class="fsub" lang="en">Robert Stephenson Smith Lord Baden Powell of Gilwell, Founder of the Scout Movement</p>
+    <button class="btn" type="button" onclick="openFounder()">বিস্তারিত তথ্য</button>
+   </div>
   </div>
  </div>
 </section>
@@ -288,6 +336,48 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
    <div class="notice-list" id="publicNoticeList" aria-live="polite">
     <p class="notice-empty">নোটিশ লোড হচ্ছে...</p>
    </div>
+  </div>
+ </div>
+</div>
+
+<!-- ===== ফটো গ্যালারী পপআপ ===== -->
+<div class="modal" id="galleryModal" onclick="if(event.target===this)closeGallery()">
+ <div class="modal-box">
+  <div class="modal-bar"><span>ফটো গ্যালারী</span><button class="modal-share" type="button" onclick="shareModal()" aria-label="লিংক শেয়ার করুন">🔗 শেয়ার</button><button class="modal-close" onclick="closeGallery()" aria-label="বন্ধ করুন">×</button></div>
+  <div class="modal-body"><div class="gallery-grid" id="galleryGrid"></div></div>
+ </div>
+</div>
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+ <button class="lightbox-close" type="button" onclick="closeLightbox()" aria-label="বন্ধ করুন">×</button>
+ <button class="lightbox-nav prev" type="button" onclick="moveLightbox(-1)" aria-label="আগের ছবি">‹</button>
+ <img id="lightboxImg" alt="গ্যালারির ছবি">
+ <button class="lightbox-nav next" type="button" onclick="moveLightbox(1)" aria-label="পরের ছবি">›</button>
+</div>
+
+<!-- ===== প্রতিষ্ঠাতার বিস্তারিত তথ্য পপআপ ===== -->
+<div class="modal" id="founderModal" onclick="if(event.target===this)closeFounder()">
+ <div class="modal-box">
+  <div class="modal-bar"><span>স্কাউটের প্রতিষ্ঠাতা — বিস্তারিত তথ্য</span><button class="modal-share" type="button" onclick="shareModal()" aria-label="লিংক শেয়ার করুন">🔗 শেয়ার</button><button class="modal-close" onclick="closeFounder()" aria-label="বন্ধ করুন">×</button></div>
+  <div class="modal-body founder-body">
+   <img class="founder-photo-lg" src="https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/c8d2f2f04eaf386666fe8f04e8b031a87f6a0591/bp.jpg" alt="রবার্ট ব্যাডেন-পাওয়েল" loading="lazy">
+   <h2 class="founder-title">রবার্ট স্টিফেনসন স্মিথ লর্ড ব্যাডেন পাওয়েল অফ গিলওয়েল</h2>
+   <p class="founder-sub">(বি-পি) • বিশ্ব স্কাউট আন্দোলনের প্রতিষ্ঠাতা</p>
+   <h3>জন্ম ও পরিচয়</h3>
+   <p>রবার্ট ব্যাডেন-পাওয়েল ১৮৫৭ সালের ২২ ফেব্রুয়ারি লন্ডনে জন্মগ্রহণ করেন। তিনি ছিলেন একজন ব্রিটিশ সেনা কর্মকর্তা, লেখক ও শিক্ষাবিদ। তাঁকে সবাই সংক্ষেপে "বি-পি" নামে চেনে।</p>
+   <h3>সামরিক জীবন</h3>
+   <p>তিনি ব্রিটিশ সেনাবাহিনীতে দীর্ঘদিন কাজ করেন। ১৮৯৯–১৯০০ সালে দক্ষিণ আফ্রিকার মেফেকিং অবরোধের সময় তাঁর নেতৃত্ব ও কৌশল তাঁকে ব্যাপক পরিচিতি এনে দেয়।</p>
+   <h3>স্কাউট আন্দোলনের সূচনা</h3>
+   <ul>
+    <li><b>১৯০৭:</b> ইংল্যান্ডের ব্রাউনসি দ্বীপে ২০ জন কিশোরকে নিয়ে প্রথম পরীক্ষামূলক স্কাউট ক্যাম্প করেন।</li>
+    <li><b>১৯০৮:</b> "Scouting for Boys" বইটি প্রকাশ করেন, যা থেকে স্কাউটিং দ্রুত বিভিন্ন দেশে ছড়িয়ে পড়ে।</li>
+    <li><b>১৯১০:</b> বোন অ্যাগনেস ব্যাডেন-পাওয়েলের সহায়তায় মেয়েদের জন্য গার্ল গাইডস আন্দোলন শুরু করেন।</li>
+    <li><b>১৯১৮–১৯২২:</b> বয়স্ক তরুণদের জন্য রোভার স্কাউট কার্যক্রম গড়ে ওঠে এবং "Rovering to Success" বইটি প্রকাশিত হয়।</li>
+    <li><b>১৯২০:</b> লন্ডনে প্রথম বিশ্ব স্কাউট জাম্বুরিতে তাঁকে বিশ্বের চিফ স্কাউট ঘোষণা করা হয়।</li>
+   </ul>
+   <h3>সম্মাননা ও শেষ জীবন</h3>
+   <p>১৯২৯ সালে তিনি "ব্যারন ব্যাডেন-পাওয়েল" উপাধি লাভ করেন। ১৯৪১ সালের ৮ জানুয়ারি কেনিয়ার নিয়েরিতে তিনি মৃত্যুবরণ করেন এবং সেখানেই তাঁকে সমাহিত করা হয়।</p>
+   <h3>স্কাউটিংয়ের আদর্শ</h3>
+   <p>বি-পি-র আদর্শ ছিল তরুণদের চরিত্র গঠন, সেবা, শৃঙ্খলা ও দায়িত্ববোধে গড়ে তোলা। তাঁর জন্মদিন ২২ ফেব্রুয়ারি বিশ্বজুড়ে "থিংকিং ডে" (বিশ্ব স্কাউট দিবস) হিসেবে পালিত হয়।</p>
   </div>
  </div>
 </div>
@@ -540,6 +630,7 @@ function currentShareUrl(){
 function showModal(id, noHistory){
  var modal=document.getElementById(id);
  if(!modal) return;
+ if(id==='galleryModal') buildGallery();
  document.querySelectorAll('.modal.open').forEach(function(item){item.classList.remove('open')});
  modal.classList.add('open');
  activeModalId=id;
@@ -824,6 +915,46 @@ function openPromise(){showModal('promiseModal')}
 function closePromise(){hideModal('promiseModal')}
 function openNotice(){showModal('noticeModal')}
 function closeNotice(){hideModal('noticeModal')}
+// ===== ফটো গ্যালারী =====
+// ★ ছবি পরিবর্তন: নিচের তালিকায় যেকোনো লিংক বদলে নতুন ইমেজ লিংক বসান।
+// ★ ছবি মুছতে: ওই লাইনটি (লিংকসহ) ডিলেট করুন। নতুন ছবি যোগ করতে: নতুন লাইনে "লিংক", লিখুন।
+var GALLERY_PHOTOS=[
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/83e30b121b1ee49c5458de18f6f9c12db9e82124/Cover1.jpeg",
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230809.jpg",
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/1774510649100.jpeg",
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230328.jpg",
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230543.jpg",
+ "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/received_898790112985289.jpeg"
+];
+var galleryBuilt=false, lightboxIndex=0;
+function visibleGallery(){return GALLERY_PHOTOS.filter(function(u){return u&&String(u).trim()})}
+function buildGallery(){
+ var grid=document.getElementById('galleryGrid');
+ if(!grid||galleryBuilt) return;
+ galleryBuilt=true;
+ var list=visibleGallery();
+ if(!list.length){grid.outerHTML='<p class="gallery-empty">গ্যালারিতে এখনো কোনো ছবি যোগ করা হয়নি।</p>';return;}
+ list.forEach(function(url,i){
+  var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','ছবি '+(i+1)+' বড় করে দেখুন');
+  var im=document.createElement('img');im.src=url;im.alt='গ্যালারির ছবি '+(i+1);im.loading='lazy';
+  im.onerror=function(){b.style.display='none'};
+  b.appendChild(im);b.addEventListener('click',function(){openLightbox(i)});
+  grid.appendChild(b);
+ });
+}
+function openLightbox(i){lightboxIndex=i;document.getElementById('lightboxImg').src=visibleGallery()[i];document.getElementById('lightbox').classList.add('open')}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
+function moveLightbox(d){var l=visibleGallery();openLightbox((lightboxIndex+d+l.length)%l.length)}
+document.addEventListener('keydown',function(e){
+ var lb=document.getElementById('lightbox');
+ if(!lb||!lb.classList.contains('open')) return;
+ if(e.key==='Escape')closeLightbox();else if(e.key==='ArrowLeft')moveLightbox(-1);else if(e.key==='ArrowRight')moveLightbox(1);
+});
+function openGallery(){showModal('galleryModal')}
+function closeGallery(){closeLightbox();hideModal('galleryModal')}
+function openFounder(){showModal('founderModal')}
+function closeFounder(){hideModal('founderModal')}
+
 function openHistory(){showModal('histModal')}
 function closeHistory(){hideModal('histModal')}
 
