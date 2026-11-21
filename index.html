@@ -500,15 +500,30 @@ var MODAL_HASH={noticeModal:'notice',histModal:'history',songModal:'prayer',prom
 var HASH_MODAL={};
 Object.keys(MODAL_HASH).forEach(function(k){HASH_MODAL[MODAL_HASH[k]]=k;});
 
-function baseUrl(){return location.pathname+location.search;}
+var ROOT_PATH=location.pathname.replace(/[^\/]*$/,'');
+function baseUrl(){return ROOT_PATH;}
+// পপআপের নিজস্ব পেজ-লিংক (যেমন /notice.html, /history.html) — এতে লিংক প্রিভিউতে আলাদা নাম/বিবরণ আসে
+function pathFor(h){
+ if(!h) return ROOT_PATH;
+ if(h.indexOf('notice-')===0 && h.length>7) return ROOT_PATH+'notice.html?n='+encodeURIComponent(h.slice(7));
+ if(HASH_MODAL[h]) return ROOT_PATH+h+'.html';
+ return ROOT_PATH+'#'+h;
+}
 function setHash(h,push){
- var url=baseUrl()+(h?'#'+h:'');
+ var url=pathFor(h);
  try{
   if(push) history.pushState({siteModal:h},'',url);
   else history.replaceState({siteModal:h},'',url);
  }catch(e){}
 }
 function parseHash(){
+ var rel=location.pathname.indexOf(ROOT_PATH)===0?location.pathname.slice(ROOT_PATH.length):'';
+ var pm=/^([a-z]+)\.html$/.exec(rel);
+ if(pm && HASH_MODAL[pm[1]]){
+  var q=/[?&]n=([^&#]+)/.exec(location.search);
+  if(pm[1]==='notice' && q){var k=q[1];try{k=decodeURIComponent(k);}catch(e){}return {id:'noticeModal',notice:k};}
+  return {id:HASH_MODAL[pm[1]]};
+ }
  var h=location.hash.replace(/^#/,'');
  try{h=decodeURIComponent(h);}catch(e){}
  if(!h) return null;
@@ -519,7 +534,7 @@ function parseHash(){
  return null;
 }
 function currentShareUrl(){
- return location.origin+baseUrl()+(activeModalId?'#'+(MODAL_HASH[activeModalId]||activeModalId):'');
+ return location.origin+pathFor(activeModalId?(MODAL_HASH[activeModalId]||activeModalId):'');
 }
 
 function showModal(id, noHistory){
@@ -582,7 +597,7 @@ function shareLink(url,title){
 }
 function shareModal(){shareLink(currentShareUrl(),document.title);}
 function shareNotice(key,title){
- shareLink(location.origin+baseUrl()+'#notice-'+key,title);
+ shareLink(location.origin+pathFor('notice-'+key),title);
 }
 
 // ----- নির্দিষ্ট নোটিশে যাওয়া -----
