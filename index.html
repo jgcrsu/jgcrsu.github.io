@@ -302,7 +302,7 @@ footer{background:#0d2e26;color:#dce7e1;padding:48px 0 22px}.foot{display:grid;g
   <div class="cards">
    <article class="card"><img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=900&q=80" alt="ক্যাম্পিং"><div class="card-body"><h3>ক্যাম্পিং</h3><p>দলগত জীবন, দায়িত্ব ভাগাভাগি, প্রকৃতির সঙ্গে পরিচয় ও ক্যাম্পের নিয়মকানুন শেখা।</p></div></article>
    <article class="card"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="প্রশিক্ষণ"><div class="card-body"><h3>দক্ষতা প্রশিক্ষণ</h3><p>প্রাথমিক চিকিৎসা, যোগাযোগ, দল পরিচালনা, নিরাপত্তা সচেতনতা ও ব্যবহারিক দক্ষতার প্রশিক্ষণ।</p></div></article>
-   <article class="card"><img src="https://i.postimg.cc/j5Hhz9gC/Screenshot-2026-11-18-12-18-59-614-com-google-android-apps-photos.png?auto=format&fit=crop&w=900&q=80" alt="দলীয় সমাবেশ"><div class="card-body"><h3>সমাবেশ ও ক্যাম্পুরি</h3><p>ইউনিট, জেলা ও জাতীয় পর্যায়ের অনুমোদিত সমাবেশে অংশগ্রহণ ও অভিজ্ঞতা বিনিময়।</p></div></article>
+   <article class="card"><img src="https://i.postimg.cc/j5Hhz9gC/Screenshot-2026-11-18-12-18-59-614-com-google-android-apps-photos.png?auto=format&fit=crop&w=900&q=80" alt="দলীয় সমাবেশ"><div class="card-body"><h3>জাতীয় রোভার মুট</h3><p>ইউনিট, জেলা ও জাতীয় পর্যায়ের অনুমোদিত মুটে অংশগ্রহণ ও অভিজ্ঞতা বিনিময়।</p></div></article>
   </div>
  </div>
 </section>
@@ -920,25 +920,41 @@ function openPromise(){showModal('promiseModal')}
 function closePromise(){hideModal('promiseModal')}
 function openNotice(){showModal('noticeModal')}
 function closeNotice(){hideModal('noticeModal')}
-// ===== ফটো গ্যালারী =====
-// ★ ছবি পরিবর্তন: নিচের তালিকায় যেকোনো লিংক বদলে নতুন ইমেজ লিংক বসান।
-// ★ ছবি মুছতে: ওই লাইনটি (লিংকসহ) ডিলেট করুন। নতুন ছবি যোগ করতে: নতুন লাইনে "লিংক", লিখুন।
+// ===== ফটো গ্যালারী (অটো সিস্টেম) =====
+// ★ GitHub-এ নিচের ফোল্ডারে ছবি আপলোড করলেই গ্যালারিতে নিজে থেকে দেখা যাবে। HTML এডিট লাগবে না।
+// ★ ছবি ডিলেট করতে GitHub-এর ওই ফোল্ডার থেকে ছবিটি ডিলেট করুন।
+var GALLERY_AUTO={owner:"ahsanhabib2a",repo:"Website-images-",folder:"photos",branch:"main"};
+// ★ (ঐচ্ছিক) ফোল্ডারের বাইরের কোনো ছবি যোগ করতে চাইলে এখানে লিংক লিখুন, প্রতি লাইনে একটি, শেষে কমা:
 var GALLERY_PHOTOS=[
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/83e30b121b1ee49c5458de18f6f9c12db9e82124/Cover1.jpeg",
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230809.jpg",
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/1774510649100.jpeg",
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230328.jpg",
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/20261119_230543.jpg",
- "https://raw.githubusercontent.com/ahsanhabib2a/Website-images-/main/received_898790112985289.jpeg"
 ];
-var galleryBuilt=false, lightboxIndex=0;
-function visibleGallery(){return GALLERY_PHOTOS.filter(function(u){return u&&String(u).trim()})}
-function buildGallery(){
+var galleryBuilt=false, lightboxIndex=0, galleryList=[];
+function cleanList(a){return a.filter(function(u){return u&&String(u).trim()})}
+function fetchGalleryFolder(){
+ var A=GALLERY_AUTO, key='jgcrsu_gallery_v1', now=Date.now(), cached=null;
+ try{cached=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+ if(cached&&cached.t&&now-cached.t<300000&&cached.urls) return Promise.resolve(cached.urls);
+ var url='https://api.github.com/repos/'+A.owner+'/'+A.repo+'/contents/'+encodeURIComponent(A.folder)+'?ref='+encodeURIComponent(A.branch);
+ return fetch(url,{headers:{'Accept':'application/vnd.github+json'}}).then(function(r){
+  if(!r.ok) throw new Error('http '+r.status);
+  return r.json();
+ }).then(function(items){
+  var urls=items.filter(function(f){return f.type==='file'&&/\.(jpe?g|png|webp|gif)$/i.test(f.name)})
+   .sort(function(x,y){return x.name.localeCompare(y.name,undefined,{numeric:true})})
+   .map(function(f){return f.download_url});
+  try{localStorage.setItem(key,JSON.stringify({t:now,urls:urls}));}catch(e){}
+  return urls;
+ }).catch(function(){
+  return cached&&cached.urls?cached.urls:[];
+ });
+}
+function visibleGallery(){return galleryList}
+function renderGallery(list){
  var grid=document.getElementById('galleryGrid');
- if(!grid||galleryBuilt) return;
- galleryBuilt=true;
- var list=visibleGallery();
- if(!list.length){grid.outerHTML='<p class="gallery-empty">গ্যালারিতে এখনো কোনো ছবি যোগ করা হয়নি।</p>';return;}
+ if(!grid) return;
+ galleryList=list;
+ grid.innerHTML='';
+ if(!list.length){grid.style.display='block';grid.innerHTML='<p class="gallery-empty">গ্যালারিতে এখনো কোনো ছবি যোগ করা হয়নি।</p>';return;}
+ grid.style.display='';
  list.forEach(function(url,i){
   var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','ছবি '+(i+1)+' বড় করে দেখুন');
   var im=document.createElement('img');im.src=url;im.alt='গ্যালারির ছবি '+(i+1);im.loading='lazy';
@@ -947,6 +963,19 @@ function buildGallery(){
   grid.appendChild(b);
  });
 }
+function buildGallery(){
+ var grid=document.getElementById('galleryGrid');
+ if(!grid||galleryBuilt) return;
+ galleryBuilt=true;
+ grid.style.display='block';
+ grid.innerHTML='<p class="gallery-empty">ছবি লোড হচ্ছে...</p>';
+ var manual=cleanList(GALLERY_PHOTOS);
+ fetchGalleryFolder().then(function(auto){
+  var all=auto.concat(manual.filter(function(u){return auto.indexOf(u)<0}));
+  renderGallery(all);
+ });
+}
+
 var lightboxPushed=false;
 function openLightbox(i){
  var lb=document.getElementById('lightbox');
